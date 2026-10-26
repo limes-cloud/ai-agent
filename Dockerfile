@@ -4,6 +4,7 @@ RUN apk add git
 
 ENV GOPROXY=https://goproxy.cn,direct
 ENV GO111MODULE=on
+ENV GOTOOLCHAIN=auto
 
 WORKDIR /go/cache
 ADD api/go.mod api/go.mod
@@ -19,7 +20,6 @@ RUN GOOS=linux CGO_ENABLED=0 go build -ldflags="-s -w" -installsuffix cgo -o ai-
 FROM alpine
 WORKDIR /go/build
 COPY ./conf/ /go/build/conf/
-COPY ./static/ /go/build/static/
 COPY ./deploy/ /go/build/deploy/
 COPY --from=build /go/build/ai-agent /go/build/ai-agent
 CMD ["./ai-agent"]

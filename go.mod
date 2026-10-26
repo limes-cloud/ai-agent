@@ -17,8 +17,8 @@ require (
 	github.com/limes-cloud/ai-agent/api v0.0.0
 	github.com/limes-cloud/configure v1.0.49
 	github.com/limes-cloud/kratosx v1.3.3
-	github.com/limes-cloud/manager/api v0.0.0
-	github.com/limes-cloud/resource/api v0.0.0
+	github.com/limes-cloud/manager/api v0.0.0-20261026110354-b57fe642f908
+	github.com/limes-cloud/resource/api v0.0.0-20261026110623-0ac89c5fb963
 	github.com/stretchr/testify v1.11.1
 	go.uber.org/automaxprocs v1.5.3
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
@@ -146,8 +146,4 @@ require (
 	gorm.io/gorm v1.30.1 // indirect
 )
 
-replace (
-	github.com/limes-cloud/ai-agent/api v0.0.0 => ./api
-	github.com/limes-cloud/manager/api v0.0.0 => ../manager/api
-	github.com/limes-cloud/resource/api v0.0.0 => ../../server/resource/api
-)
+replace github.com/limes-cloud/ai-agent/api v0.0.0 => ./api
