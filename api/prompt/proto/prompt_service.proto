@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package aiagent.api.prompt;
+option go_package = "ai-agent/api/prompt;prompt";
+
+import "api/prompt/proto/prompt.proto";
+import "google/api/annotations.proto";
+
+service Prompt{
+
+  // ListPromptClassify 获取提示词分类列表
+  rpc ListPromptClassify (ListPromptClassifyRequest) returns (ListPromptClassifyReply) {
+    option (google.api.http) = {
+      get: "/ai-agent/api/prompt/classifies",
+    };
+  }
+
+  // CreatePromptClassify 创建提示词分类
+  rpc CreatePromptClassify (CreatePromptClassifyRequest) returns (CreatePromptClassifyReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/prompt/classify",
+      body: "*"
+    };
+  }
+
+  // UpdatePromptClassify 更新提示词分类
+  rpc UpdatePromptClassify (UpdatePromptClassifyRequest) returns (UpdatePromptClassifyReply) {
+    option (google.api.http) = {
+      put: "/ai-agent/api/prompt/classify",
+      body: "*"
+    };
+  }
+
+  // DeletePromptClassify 删除提示词分类
+  rpc DeletePromptClassify (DeletePromptClassifyRequest) returns (DeletePromptClassifyReply) {
+    option (google.api.http) = {
+      delete: "/ai-agent/api/prompt/classify",
+    };
+  }
+
+  // ListPrompt 获取提示词信息列表
+  rpc ListPrompt (ListPromptRequest) returns (ListPromptReply) {
+    option (google.api.http) = {
+      get: "/ai-agent/api/prompts",
+    };
+  }
+
+  // CreatePrompt 创建提示词信息
+  rpc CreatePrompt (CreatePromptRequest) returns (CreatePromptReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/prompt",
+      body: "*"
+    };
+  }
+
+  // UpdatePrompt 更新提示词信息
+  rpc UpdatePrompt (UpdatePromptRequest) returns (UpdatePromptReply) {
+    option (google.api.http) = {
+      put: "/ai-agent/api/prompt",
+      body: "*"
+    };
+  }
+
+  // DeletePrompt 删除提示词信息
+  rpc DeletePrompt (DeletePromptRequest) returns (DeletePromptReply) {
+    option (google.api.http) = {
+      delete: "/ai-agent/api/prompt",
+    };
+  }
+}

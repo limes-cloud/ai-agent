@@ -1,0 +1,97 @@
+name: ai-agent
+server:
+  http:
+    host: 127.0.0.1
+    port: 7060
+    timeout: 60s
+    timeoutSpecial:
+      # 文生图（qwen-image 等）耗时可超过 60s，单独放宽
+      POST:/ai-agent/api/generate/prompt/image: 180s
+      POST:/ai-agent/api/generate/image: 180s
+      POST:/ai-agent/api/v1/sys-chat/conversation: 120s
+    marshal:
+      emitUnpopulated: true
+      useProtoNames: true
+    formatResponse: true
+    cors: #跨域配置
+      allowCredentials: true
+      allowOrigins: [ "*" ]
+      allowMethods: [ "GET","POST","PUT","DELETE","OPTIONS" ]
+      allowHeaders: [ "Content-Type", "Content-Length", "Authorization", "X-App-Key" ]
+      exposeHeaders: [ "Content-Length", "Access-Control-Allow-Headers" ]
+  grpc:
+    host: 127.0.0.1
+    port: 8060
+    timeout: 10s
+client:
+  - server: Resource
+    type: direct
+    backends:
+      - target: 127.0.0.1:8020
+  - server: Manager
+    type: direct
+    backends:
+      - target: 127.0.0.1:8010
+    signature:
+      enable: true
+      ak: manager
+      sk: manager
+log:
+  level: 0
+  caller: true
+  output:
+    - stdout
+    - file
+  file:
+    name: ./tmp/runtime/output.log
+    maxSize: 1
+    maxBackup: 5
+    maxAge: 1
+    compress: false
+database:
+  - name: system
+    enable: true #是否启用数据库
+    drive: mysql #数据库类型
+    autoCreate: true #是否自动创建数据库
+    connect:
+      username: root
+      password: root
+      host: 127.0.0.1
+      port: 3306
+      dbName: ai_agent
+      option: ?charset=utf8mb4&parseTime=True&loc=Local
+    config:
+      transformError:
+        enable: true
+      initializer:
+        enable: false
+        path: deploy/data.sql
+      maxLifetime: 2h #最大生存时间
+      maxOpenConn: 20 #最大连接数量
+      maxIdleConn: 10 #最大空闲数量
+      logLevel: 4 #日志等级
+      slowThreshold: 2s #慢sql阈值
+redis:
+  - name: cache
+    enable: true
+    host: 127.0.0.1:6379
+    username:
+    password:
+pool: #并非池配置
+  size: 10000 #最大协程数量
+  expiryDuration: 30s #过期时间
+  preAlloc: true #是否预分配
+  maxBlockingTasks: 1000 #最大的并发任务
+  nonblocking: true #设置为true时maxBlockingTasks将失效，不限制并发任务
+request:
+  enableLog: true
+  retryCount: 1
+  retryWaitTime: 1s
+  maxRetryWaitTime: 2s
+  timeout: 60s
+business:
+  vectors:
+    redis:
+      host: 127.0.0.1:6379
+      username:
+      password:

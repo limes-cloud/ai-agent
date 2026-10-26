@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package aiagent.api.model;
+
+option go_package = "ai-agent/api/model;model";
+import "validate/validate.proto";
+
+message ListModelTypeRequest {}
+
+message ListModelTypeReply {
+  repeated string list = 1;
+}
+
+message ListModelRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  optional string type = 3;
+  optional string uuid = 4;
+  optional uint32 secretGroupId = 5;
+}
+
+message ListModelReply {
+  message Group {
+    uint32 id = 1;
+    string name = 2;
+    string supplier = 3;
+  }
+
+  message Data{
+   string type = 1;
+   string uuid = 2;
+   string keyword = 3;
+   uint32 secretGroupId = 4;
+   string description = 5;
+   Group secretGroup = 6;
+   string extra = 7;
+   uint32 createdAt = 8;
+   uint32 updatedAt = 9;
+   uint32 id = 10;
+   uint32 status = 11; // 状态：0 禁用 | 1 启用
+  }
+
+  uint32 total = 1;
+  repeated  Data list = 2;
+}
+
+message CreateModelRequest {
+  string type = 1[(validate.rules).string = {min_len: 1}];
+  string uuid = 2[(validate.rules).string = {min_len: 1}];
+  string keyword = 3[(validate.rules).string = {min_len: 1}];
+  string description = 4[(validate.rules).string = {min_len: 1}];
+  uint32 secretGroupId = 5[(validate.rules).uint32 = {gte: 1}];
+  string extra = 6;
+  optional uint32 status = 7[(validate.rules).uint32 = {in: [0, 1]}]; // 状态：0 禁用 | 1 启用（缺省按启用）
+}
+
+message CreateModelReply {
+  uint32 id = 1;
+}
+
+message UpdateModelRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+  string type = 2[(validate.rules).string = {min_len: 1}];
+  string uuid = 3[(validate.rules).string = {min_len: 1}];
+  string keyword = 4[(validate.rules).string = {min_len: 1}];
+  string description = 5[(validate.rules).string = {min_len: 1}];
+  uint32 secretGroupId = 6[(validate.rules).uint32 = {gte: 1}];
+  string extra = 7;
+  optional uint32 status = 8[(validate.rules).uint32 = {in: [0, 1]}]; // 状态：0 禁用 | 1 启用（缺省按启用）
+}
+
+message UpdateModelReply {
+}
+
+message DeleteModelRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte:0}];
+}
+
+message DeleteModelReply {
+}
+
+message EmbeddingRequest {
+  string model = 1;
+  repeated string texts = 2;
+}
+
+message EmbeddingReply{
+  float vectors = 1;
+}

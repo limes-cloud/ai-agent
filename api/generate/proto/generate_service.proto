@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package aiagent.api.generate;
+
+option go_package = "ai-agent/api/generate;generate";
+
+import "api/generate/proto/generate.proto";
+import "google/api/annotations.proto";
+
+service Generate{
+  // Text 文本生产
+  rpc Text (TextRequest) returns (TextReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/generate/text",
+      body: "*"
+    };
+  }
+
+  // Image 图片生产
+  rpc Image (ImageRequest) returns (ImageReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/generate/image",
+      body: "*"
+    };
+  }
+
+  // PromptText 文本生产
+  rpc PromptText (PromptTextRequest) returns (PromptTextReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/generate/prompt/text",
+      body: "*"
+    };
+  }
+
+  // PromptImage 图片生产
+  rpc PromptImage (PromptImageRequest) returns (PromptImageReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/generate/prompt/image",
+      body: "*"
+    };
+  }
+
+}

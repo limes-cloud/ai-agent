@@ -1,0 +1,132 @@
+syntax = "proto3";
+
+package aiagent.api.prompt;
+
+option go_package = "ai-agent/api/prompt;prompt";
+import "validate/validate.proto";
+
+
+message ListPromptClassifyRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  optional string name = 3;
+}
+
+message ListPromptClassifyReply {
+  message PromptClassify {
+    uint32 id = 1;
+    string name = 2;
+    string description = 3;
+    uint32 createdAt = 4;
+    uint32 updatedAt = 5;
+  }
+
+  uint32 total = 1;
+  repeated PromptClassify list = 2;
+}
+
+message CreatePromptClassifyRequest {
+  string name = 1[(validate.rules).string = {min_len: 1}];
+  string description = 2[(validate.rules).string = {min_len: 1,max_len: 32}];
+}
+
+message CreatePromptClassifyReply {
+  uint32 id = 1;
+}
+
+message UpdatePromptClassifyRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+  string name = 2;
+  string description = 3;
+}
+
+message UpdatePromptClassifyReply {
+}
+
+message DeletePromptClassifyRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte:0}];
+}
+
+message DeletePromptClassifyReply {
+}
+
+
+message ListPromptRequest {
+  uint32 page = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 pageSize = 2[(validate.rules).uint32 = {gt: 0,lte:50}];
+  optional uint32 classifyId = 3;
+  optional bool status = 4;
+  optional string title = 5;
+}
+
+message ListPromptReply {
+  message Classify {
+    uint32 id = 1;
+    string name = 2;
+  }
+  message Model {
+    uint32 id = 1;
+    string name = 2;
+    string keyword = 3;
+    string description = 4;
+    string type = 5; // 模型类型：chat | image | embedding | video（测试场景路由依据）
+  }
+  message Data{
+    uint32 id = 1;
+    uint32 classifyId = 2;
+    string uuid = 3;
+    string title = 4;
+    string system = 5;
+    string prompt = 6;
+    string description = 7;
+    string extra = 8;
+    bool formatJson = 9;
+    optional string outputSchema = 10;
+    uint32 modelId = 11;
+    uint32 status = 12;
+    string version = 13;
+    uint32 createdAt = 14;
+    uint32 updatedAt = 15;
+    Classify classify = 16;
+    Model model = 17;
+  }
+
+  uint32 total = 1;
+  repeated  Data list = 2;
+}
+
+message CreatePromptRequest {
+  string uuid = 1[(validate.rules).string = {min_len: 1}];
+  uint32 classifyId = 2[(validate.rules).uint32 = {gte: 1}];
+  uint32 modelId = 3[(validate.rules).uint32 = {gte: 1}];
+  string title = 4[(validate.rules).string = {min_len: 1}];
+  optional string system = 5; // 系统提示（可选，空串/缺省均合法）
+  string prompt = 6[(validate.rules).string = {min_len: 1}];
+  string description = 7[(validate.rules).string = {min_len: 1}];
+  string extra = 8;
+}
+
+message CreatePromptReply {
+  uint32 id = 1;
+}
+
+message UpdatePromptRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gt: 0}];
+  uint32 classifyId = 2;
+  uint32 modelId = 3;
+  string title = 4;
+  optional string system = 5;
+  string prompt = 6;
+  string description = 7;
+  string extra = 8;
+  optional uint32 status = 9;
+}
+
+message UpdatePromptReply {
+}
+
+message DeletePromptRequest {
+  uint32 id = 1[(validate.rules).uint32 = {gte:0}];
+}
+
+message DeletePromptReply {}

@@ -1,0 +1,21 @@
+version: v2
+modules:
+  - path: .
+    excludes:
+      - third_party
+  - path: third_party
+lint:
+  ignore:
+    - third_party
+  except:
+    - PACKAGE_VERSION_SUFFIX
+    - PACKAGE_DIRECTORY_MATCH
+    - FIELD_LOWER_SNAKE_CASE
+    - SERVICE_SUFFIX
+    - RPC_RESPONSE_STANDARD_NAME
+    - PACKAGE_SAME_CSHARP_NAMESPACE
+    - PACKAGE_SAME_GO_PACKAGE
+    - PACKAGE_SAME_JAVA_MULTIPLE_FILES
+    - ENUM_VALUE_PREFIX
+    - ENUM_ZERO_VALUE_SUFFIX
+    - ENUM_VALUE_UPPER_SNAKE_CASE

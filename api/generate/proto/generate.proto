@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package aiagent.api.generate;
+option go_package = "ai-agent/api/generate;generate";
+import "validate/validate.proto";
+import "google/protobuf/struct.proto";
+
+
+
+message TextRequest {
+  message Attachment {
+    repeated string images = 1;
+  }
+  string model = 1[(validate.rules).string = {min_len: 1}];
+  string system = 2;
+  string prompt = 3[(validate.rules).string = {min_len: 1}];
+  google.protobuf.Struct variables = 4;
+  bool stream = 5;
+  optional float temperature = 7;
+  optional float topP = 8;
+  Attachment attachment = 9;
+  google.protobuf.Struct responseFormat = 10;
+}
+
+message TextReply {
+   string content = 1;
+   google.protobuf.Struct format = 2;
+}
+
+
+message ImageRequest {
+  string model = 1[(validate.rules).string = {min_len: 1}];
+  string prompt = 2[(validate.rules).string = {min_len: 1}];
+  google.protobuf.Struct variables = 3;
+  string size = 4;
+  string directoryPath = 5[(validate.rules).string = {min_len: 1}];
+  string store = 6;
+}
+
+message ImageReply {
+  repeated string list = 1;
+}
+
+
+
+message PromptTextRequest {
+  message Attachment {
+    repeated string images = 1;
+  }
+  string prompt = 2[(validate.rules).string = {min_len: 1}];
+  google.protobuf.Struct variables = 4;
+  Attachment attachment = 9;
+}
+
+message PromptTextReply {
+  string content = 1;
+  google.protobuf.Struct format = 2;
+}
+
+
+message PromptImageRequest {
+  string prompt = 1[(validate.rules).string = {min_len: 1}];
+  google.protobuf.Struct variables = 3;
+}
+
+message PromptImageReply {
+  repeated string list = 1;
+}

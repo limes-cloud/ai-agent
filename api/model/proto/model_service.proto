@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package aiagent.api.model;
+
+option go_package = "ai-agent/api/model;model";
+
+import "api/model/proto/model.proto";
+import "google/api/annotations.proto";
+
+service Model{
+  // ListModelType 获取模型类型列表
+  rpc ListModelType (ListModelTypeRequest) returns (ListModelTypeReply) {
+    option (google.api.http) = {
+      get: "/ai-agent/api/model/types",
+    };
+  }
+
+  // ListModel 获取模型信息列表
+  rpc ListModel (ListModelRequest) returns (ListModelReply) {
+    option (google.api.http) = {
+      get: "/ai-agent/api/models",
+    };
+  }
+
+  // CreateModel 创建模型信息
+  rpc CreateModel (CreateModelRequest) returns (CreateModelReply) {
+    option (google.api.http) = {
+      post: "/ai-agent/api/model",
+      body: "*"
+    };
+  }
+
+  // UpdateModel 更新模型信息
+  rpc UpdateModel (UpdateModelRequest) returns (UpdateModelReply) {
+    option (google.api.http) = {
+      put: "/ai-agent/api/model",
+      body: "*"
+    };
+  }
+
+  // DeleteModel 删除模型信息
+  rpc DeleteModel (DeleteModelRequest) returns (DeleteModelReply) {
+    option (google.api.http) = {
+      delete: "/ai-agent/api/model",
+    };
+  }
+
+}
